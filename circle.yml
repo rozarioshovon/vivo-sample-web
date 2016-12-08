@@ -1,4 +1,9 @@
-#deploy
+# test
+test:
+  override:
+    - echo "test"
+
+# deploy
 deployment:
   prod:
     branch: master
