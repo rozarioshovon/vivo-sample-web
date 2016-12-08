@@ -1,0 +1,6 @@
+#deploy
+deployment:
+  prod:
+    branch: master
+    commands:
+      - aws s3 sync / s3://vivo-sample-web/ --delete
