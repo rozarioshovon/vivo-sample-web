@@ -2,7 +2,9 @@
 machine:
   timezone: Asia/Tokyo
   post:
-    - sudo dnf install jq
+    - wget -O jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+    - sudo chmod +x ./jq
+    - sudo cp jq /usr/bin
 
 # test
 test:
@@ -14,4 +16,7 @@ deployment:
   prod:
     branch: master
     commands:
+      - targetBucketName=`echo vivo-sample-web`
+      - domainName=`aws cloudfront get-distribution-config --id E2HVGXWAELHRMB | jq -r '.DistributionConfig .Origins .Items[0] .DomainName'`
+      - echo $domainName
       - aws s3 sync project s3://vivo-sample-web/ --delete
