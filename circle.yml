@@ -20,4 +20,6 @@ deployment:
       - targetBucketName=`echo vivo-sample-web`
       - domainName=`aws cloudfront get-distribution-config --id E2HVGXWAELHRMB | jq -r '.DistributionConfig .Origins .Items[0] .DomainName'`
       - echo $domainName
-      - aws s3 sync project s3://vivo-sample-web/ --delete
+      - IFS='.' read -r currentBucketName string <<< "$domainName"
+      - if echo $currentBucketName | grep -Eq "vivo-sample-web"; then targetBucketName=`echo vivo-sample-web-2`; fi
+      - aws s3 sync project s3://$targetBucketName/ --delete
