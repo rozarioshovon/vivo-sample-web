@@ -6,7 +6,6 @@ machine:
     - sudo chmod +x ./jq
     - sudo cp jq /usr/bin
     - aws configure set preview.cloudfront true
-    - targetBucketName="vivo-sample-web"
 
 # test
 test:
@@ -18,6 +17,4 @@ deployment:
   prod:
     branch: master
     commands:
-      - echo $targetBucketName; domainName=`aws cloudfront get-distribution-config --id E2HVGXWAELHRMB | jq -r '.DistributionConfig .Origins .Items[0] .DomainName'`; echo $domainName; IFS='.' read -r currentBucketName string <<< "$domainName"; echo $currentBucketName
-      - if echo $currentBucketName | grep -Eq "vivo-sample-web"; then targetBucketName=`echo vivo-sample-web-2`; fi
-      - aws s3 sync project s3://vivo-sample-web/ --delete
+      - targetBucketName="vivo-sample-web"; echo $targetBucketName; domainName=`aws cloudfront get-distribution-config --id E2HVGXWAELHRMB | jq -r '.DistributionConfig .Origins .Items[0] .DomainName'`; echo $domainName; IFS='.' read -r currentBucketName string <<< "$domainName"; echo $currentBucketName; if echo $currentBucketName | grep -Eq "vivo-sample-web"; then targetBucketName=`echo vivo-sample-web-2`; fi; aws s3 sync project s3://$targetBucketName/ --delete
