@@ -18,6 +18,7 @@ deployment:
     branch: master
     commands:
       - targetBucketName=`echo vivo-sample-web`
+      - echo "$targetBucketName"
       - domainName=`aws cloudfront get-distribution-config --id E2HVGXWAELHRMB | jq -r '.DistributionConfig .Origins .Items[0] .DomainName'`
       - echo $domainName
       - IFS='.' read -r currentBucketName string <<< "$domainName"
