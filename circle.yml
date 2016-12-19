@@ -17,8 +17,8 @@ deployment:
   dev:
     branch: development
     commands:
-      - aws s3 sync ./ s3://dev-vivo-sample-web/ --exclude "circleci.yml" --delete;
+      - aws s3 sync ./ s3://dev-vivo-sample-web/ --exclude "circle.yml" --delete;
   prod:
     branch: master
     commands:
-      - targetBucketName="vivo-sample-web"; domainName=`aws cloudfront get-distribution-config --id E2HVGXWAELHRMB | jq -r '.DistributionConfig .Origins .Items[0] .DomainName'`; IFS='.' read -r currentBucketName string <<< "$domainName"; if echo $currentBucketName | grep -Eq "vivo-sample-web"; then targetBucketName=`echo vivo-sample-web-2`; fi; aws s3 sync ./ s3://$targetBucketName/ --exclude "circleci.yml" --delete; echo updated code has been deployed to $targetBucketName
+      - targetBucketName="vivo-sample-web"; domainName=`aws cloudfront get-distribution-config --id E2HVGXWAELHRMB | jq -r '.DistributionConfig .Origins .Items[0] .DomainName'`; IFS='.' read -r currentBucketName string <<< "$domainName"; if echo $currentBucketName | grep -Eq "vivo-sample-web"; then targetBucketName=`echo vivo-sample-web-2`; fi; aws s3 sync ./ s3://$targetBucketName/ --exclude "circle.yml" --delete; echo updated code has been deployed to $targetBucketName
